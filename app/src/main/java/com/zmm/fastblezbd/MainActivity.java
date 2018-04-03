@@ -573,65 +573,85 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
      */
     private void setParam() {
 
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("设置参数：");
+
         if(mRbModelBei.isChecked()){
             model = 0x01;
+            sb.append("模式：被动，");
         }else {
             model = 0x02;
+            sb.append("模式：主动，");
         }
 
-        if(mRbIntelOpen.isChecked()){
-            intelligence = 0x41;
-        }else {
-            intelligence = 0x40;
-        }
 
-        if(mRbDirecZheng.isChecked()){
-            direction = 0x51;
-        }else {
-            direction = 0x50;
-        }
 
         Editable mEtTimeText = mEtTime.getText();
         if(mEtTimeText == null){
             time = 0x05;
+            sb.append("时间：5分，");
         }else {
             int timeInt = Integer.valueOf(mEtTimeText.toString().trim());
             time = TypeUtil.int2Byte(timeInt);
             System.out.println("时间参数:"+timeInt);
+            sb.append("时间："+timeInt+",");
         }
 
         Editable mEtSpeedText = mEtSpeed.getText();
         if(mEtSpeedText == null){
             speed = 0x01;
+            sb.append("速度：1档，");
         }else {
             int speedInt = Integer.valueOf(mEtSpeedText.toString().trim());
             speed = TypeUtil.int2Byte(speedInt);
             System.out.println("速度参数:"+speedInt);
+            sb.append("速度："+speedInt+"档，");
         }
 
         Editable mEtSpasmText = mEtSpasm.getText();
         if(mEtSpasmText == null){
             spasm = 0x01;
+            sb.append("痉挛等级：1档，");
         }else {
             int spasmInt = Integer.valueOf(mEtSpasmText.toString().trim());
             spasm = TypeUtil.int2Byte(spasmInt);
             System.out.println("痉挛参数:"+spasmInt);
+            sb.append("痉挛等级："+spasmInt+"档，");
         }
 
 
         Editable mEtResistanceText = mEtResistance.getText();
         if(mEtResistanceText == null){
             resistance = 0x01;
+            sb.append("阻力：1档，");
         }else {
             int resistanceInt = Integer.valueOf(mEtResistanceText.toString().trim());
             resistance = TypeUtil.int2Byte(resistanceInt);
             System.out.println("阻力参数:"+resistanceInt);
+            sb.append("阻力："+resistanceInt+"档，");
         }
 
+        if(mRbIntelOpen.isChecked()){
+            intelligence = 0x41;
+            sb.append("智能模式：开启，");
+        }else {
+            intelligence = 0x40;
+            sb.append("智能模式：关闭，");
+        }
+
+        if(mRbDirecZheng.isChecked()){
+            direction = 0x51;
+            sb.append("方向：正转。");
+        }else {
+            direction = 0x50;
+            sb.append("方向：反转。");
+        }
 
         byte[] setByte = {(byte) 0xA3,(byte)0x20,(byte)0x21,(byte)0x81,model,time,speed,spasm,resistance,intelligence,direction};
 
 //        System.out.println("设置参数:"+ Arrays.toString(setByte));
+        mTvContent.append(sb.toString()+"\n");
         mTvContent.append("设置参数：" + Arrays.toString(setByte) + "\n");
         writeBleData(setByte);
     }
