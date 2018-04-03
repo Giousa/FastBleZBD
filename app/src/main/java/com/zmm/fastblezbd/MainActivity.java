@@ -270,37 +270,53 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
                     @Override
                     public void onCharacteristicChanged(byte[] data) {
                         // 打开通知后，设备发过来的数据将在这里出现
+
                         int length = data.length;
                         String s = Arrays.toString(data);
-                        mTvContent.append("数据个数："+length+"\n");
-                        mTvContent.append("data：" + s + "\n");
 
-                        if (length == 9) {
-                            mModel = data[4];
-                            mSpeedLevel = data[5] & 0xFF;
-                            mSpeedValue = data[6] & 0xFF;
-                            mOffset = data[7] & 0xFF;
-                            mSpasmNum = data[8] & 0xFF;
+                        if(length >= 4){
 
-                        } else if (length == 4) {
-                            mSpasmLevel = data[0] & 0xFF;
-                            mRes = data[1] & 0xFF;
-                            mIntelligence = data[2];
-                            mDirection = data[3];
-                        }else if(length == 13){
-                            mModel = data[4];
-                            mSpeedLevel = data[5] & 0xFF;
-                            mSpeedValue = data[6] & 0xFF;
-                            mOffset = data[7] & 0xFF;
-                            mSpasmNum = data[8] & 0xFF;
-                            mSpasmLevel = data[9] & 0xFF;
-                            mRes = data[10] & 0xFF;
-                            mIntelligence = data[11];
-                            mDirection = data[12];
+
+                            if (length == 9 && data[3] == -128) {
+
+                                mTvContent.append("数据个数："+length+"\n");
+                                mTvContent.append("data：" + s + "\n");
+
+                                mModel = data[4];
+                                mSpeedLevel = data[5] & 0xFF;
+                                mSpeedValue = data[6] & 0xFF;
+                                mOffset = data[7] & 0xFF;
+                                mSpasmNum = data[8] & 0xFF;
+
+                            } else if (length == 4) {
+
+                                mTvContent.append("数据个数："+length+"\n");
+                                mTvContent.append("data：" + s + "\n");
+
+                                mSpasmLevel = data[0] & 0xFF;
+                                mRes = data[1] & 0xFF;
+                                mIntelligence = data[2];
+                                mDirection = data[3];
+                            }else if(length == 13 && data[3] == -128){
+
+                                mTvContent.append("数据个数："+length+"\n");
+                                mTvContent.append("data：" + s + "\n");
+
+                                mModel = data[4];
+                                mSpeedLevel = data[5] & 0xFF;
+                                mSpeedValue = data[6] & 0xFF;
+                                mOffset = data[7] & 0xFF;
+                                mSpasmNum = data[8] & 0xFF;
+                                mSpasmLevel = data[9] & 0xFF;
+                                mRes = data[10] & 0xFF;
+                                mIntelligence = data[11];
+                                mDirection = data[12];
+                            }
+
+
+                            dealData();
                         }
 
-
-                        dealData();
                     }
                 });
     }
