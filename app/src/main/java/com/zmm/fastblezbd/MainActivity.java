@@ -189,8 +189,8 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
 
                 mRecyclerView.setVisibility(View.VISIBLE);
                 if (mScanBle.getText().equals(getString(R.string.start_scan))) {
-                    checkPermissions();
-//                    startScan();
+//                    checkPermissions();
+                    startScan();
                 } else if (mScanBle.getText().equals(getString(R.string.stop_scan))) {
                     BleManager.getInstance().cancelScan();
                 }
@@ -311,6 +311,22 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
                                 mRes = data[10] & 0xFF;
                                 mIntelligence = data[11];
                                 mDirection = data[12];
+                            }else if(length == 5){
+
+                                int type = data[3] & 0xFF;
+
+                                if(type == 133){
+                                    mTvContent.setText("");
+                                    mTvContent.append("————暂停————\n");
+                                    ToastUtils.SimpleToast("————暂停————");
+                                }else if(type == 134){
+                                    mTvContent.setText("");
+                                    mTvContent.append("————停止————\n");
+                                    ToastUtils.SimpleToast("————停止————");
+
+                                }
+
+
                             }
 
 
