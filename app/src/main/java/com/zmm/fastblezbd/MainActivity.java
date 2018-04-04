@@ -189,7 +189,9 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
 
                 mRecyclerView.setVisibility(View.VISIBLE);
                 if (mScanBle.getText().equals(getString(R.string.start_scan))) {
+                    //手机测试
 //                    checkPermissions();
+                    //机顶盒测试，不开权限
                     startScan();
                 } else if (mScanBle.getText().equals(getString(R.string.stop_scan))) {
                     BleManager.getInstance().cancelScan();
@@ -274,19 +276,34 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
                         int length = data.length;
                         String s = Arrays.toString(data);
 
+//                        mTvContent.append("数据个数222："+length+"\n");
+//                        mTvContent.append("data222：" + s + "\n");
+
                         if(length >= 4){
 
+                            if (length == 9) {
 
-                            if (length == 9 && data[3] == -128) {
 
-                                mTvContent.append("数据个数："+length+"\n");
-                                mTvContent.append("data：" + s + "\n");
+                                if(data[3] == -128){
 
-                                mModel = data[4];
-                                mSpeedLevel = data[5] & 0xFF;
-                                mSpeedValue = data[6] & 0xFF;
-                                mOffset = data[7] & 0xFF;
-                                mSpasmNum = data[8] & 0xFF;
+                                    mTvContent.append("数据个数："+length+"\n");
+                                    mTvContent.append("data：" + s + "\n");
+
+                                    mModel = data[4];
+                                    mSpeedLevel = data[5] & 0xFF;
+                                    mSpeedValue = data[6] & 0xFF;
+                                    mOffset = data[7] & 0xFF;
+                                    mSpasmNum = data[8] & 0xFF;
+                                }else if(data[7] == -122){
+
+                                    mTvContent.setText("");
+
+                                    mTvContent.append("数据个数："+length+"\n");
+                                    mTvContent.append("停止data：" + s + "\n");
+                                    mTvContent.append("————停止————\n");
+
+                                    ToastUtils.SimpleToast("————停止————");
+                                }
 
                             } else if (length == 4) {
 
@@ -313,20 +330,38 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
                                 mDirection = data[12];
                             }else if(length == 5){
 
+
                                 int type = data[3] & 0xFF;
+
+                                System.out.println("type = "+type);
 
                                 if(type == 133){
                                     mTvContent.setText("");
+                                    mTvContent.append("数据个数："+length+"\n");
+                                    mTvContent.append("暂停data：" + s + "\n");
                                     mTvContent.append("————暂停————\n");
                                     ToastUtils.SimpleToast("————暂停————");
                                 }else if(type == 134){
                                     mTvContent.setText("");
+                                    mTvContent.append("数据个数："+length+"\n");
+                                    mTvContent.append("停止data：" + s + "\n");
                                     mTvContent.append("————停止————\n");
                                     ToastUtils.SimpleToast("————停止————");
 
                                 }
 
 
+                            }else if(length == 18){
+
+                                int type = data[16] & 0xFF;
+                                if(type == 134){
+                                    mTvContent.setText("");
+                                    mTvContent.append("数据个数："+length+"\n");
+                                    mTvContent.append("停止data：" + s + "\n");
+                                    mTvContent.append("————停止————\n");
+                                    ToastUtils.SimpleToast("————停止————");
+
+                                }
                             }
 
 
