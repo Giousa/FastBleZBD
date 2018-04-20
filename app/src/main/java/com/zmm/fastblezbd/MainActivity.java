@@ -190,9 +190,9 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
                 mRecyclerView.setVisibility(View.VISIBLE);
                 if (mScanBle.getText().equals(getString(R.string.start_scan))) {
                     //手机测试
-//                    checkPermissions();
+                    checkPermissions();
                     //机顶盒测试，不开权限
-                    startScan();
+//                    startScan();
                 } else if (mScanBle.getText().equals(getString(R.string.stop_scan))) {
                     BleManager.getInstance().cancelScan();
                 }
@@ -454,27 +454,30 @@ public class MainActivity extends AppCompatActivity implements BleListAdapter.On
         switch (permission) {
             case Manifest.permission.ACCESS_FINE_LOCATION:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !checkGPSIsOpen()) {
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.notifyTitle)
-                            .setMessage(R.string.gpsNotifyMsg)
-                            .setNegativeButton(R.string.cancel,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            finish();
-                                        }
-                                    })
-                            .setPositiveButton(R.string.setting,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                            startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
-                                        }
-                                    })
+//                    new AlertDialog.Builder(this)
+//                            .setTitle(R.string.notifyTitle)
+//                            .setMessage(R.string.gpsNotifyMsg)
+//                            .setNegativeButton(R.string.cancel,
+//                                    new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            finish();
+//                                        }
+//                                    })
+//                            .setPositiveButton(R.string.setting,
+//                                    new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                                            startActivityForResult(intent, REQUEST_CODE_OPEN_GPS);
+//                                        }
+//                                    })
+//
+//                            .setCancelable(false)
+//                            .show();
 
-                            .setCancelable(false)
-                            .show();
+                    setScanRule();
+                    startScan();
                 } else {
                     setScanRule();
                     startScan();
